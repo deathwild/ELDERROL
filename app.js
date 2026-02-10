@@ -496,7 +496,7 @@
 
   async function boot(silent){
     if(!WEB_APP_URL){
-      $("statusText").textContent = "WEB_APP_URL belum diisi (tab tetap bisa diklik)";
+      $("statusText").textContent = "Guild";
       if(!selectedTree && TREES[0]) selectedTree = TREES[0].key;
       syncAllUI();
       if(!silent) alertBox("skillsAlert","Isi WEB_APP_URL di app.js agar data bisa muncul", "info");
