@@ -4,7 +4,115 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Elderrol Web App</title>
-  <link rel="stylesheet" href="./style.css" />
+  <style>
+    :root{--bg:#0b1020;--card:#121a33;--muted:#9aa3b2;--text:#e9edf5;--pri:#667eea;--pri2:#764ba2;--danger:#ff4d4f;--ok:#3ad29f;}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:radial-gradient(1200px 600px at 15% -10%, rgba(102,126,234,.35), transparent 55%),radial-gradient(900px 500px at 95% 10%, rgba(118,75,162,.25), transparent 55%),var(--bg);color:var(--text)}
+    a{color:#bcd0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--pri),var(--pri2));display:grid;place-items:center;font-weight:800}
+    .title{font-size:18px;font-weight:700}
+    .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid rgba(255,255,255,.10)}
+
+    .rightTools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+    .card{background:rgba(18,26,51,.72);backdrop-filter: blur(8px);border:1px solid rgba(255,255,255,.10);border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+    .panel{padding:14px}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .tab{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);color:var(--text);padding:9px 12px;border-radius:999px;cursor:pointer;user-select:none}
+    .tab.active{background:linear-gradient(135deg,rgba(102,126,234,.28),rgba(118,75,162,.22));border-color:rgba(102,126,234,.35)}
+
+    .section{display:none;margin-top:14px}
+    .section.active{display:block}
+
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:820px){.grid2{grid-template-columns:1fr}}
+
+    .input,select,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:var(--text);outline:none}
+    .input:focus,select:focus,textarea:focus{border-color:rgba(102,126,234,.65)}
+    textarea{min-height:92px;resize:vertical}
+
+    .btn{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.08);color:var(--text);padding:9px 12px;border-radius:12px;cursor:pointer;transition:transform .05s ease}
+    .btn:hover{filter:brightness(1.06)}
+    .btn:active{transform:translateY(1px)}
+    .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+    .btn-primary{background:linear-gradient(135deg,rgba(102,126,234,.95),rgba(118,75,162,.95));border:none}
+    .btn-danger{background:rgba(255,77,79,.14);border-color:rgba(255,77,79,.35);color:#ffd7d7}
+    .btn-ghost{background:transparent}
+
+    .note{color:var(--muted);padding:10px 2px}
+
+    .alert{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06)}
+    .alert.ok{border-color:rgba(58,210,159,.35);background:rgba(58,210,159,.10)}
+    .alert.err{border-color:rgba(255,77,79,.35);background:rgba(255,77,79,.10)}
+    .alert.info{border-color:rgba(102,126,234,.35);background:rgba(102,126,234,.10)}
+
+    .skill-card{padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.20);margin-bottom:10px}
+    .skill-card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .sname{font-weight:700;font-size:15px}
+    .smeta{color:var(--muted);font-size:12px;margin-top:4px}
+    .sdesc{margin-top:10px;color:#d6dceb;line-height:1.35}
+
+    /* Skills split layout */
+    .skillLayout{display:grid;grid-template-columns:340px 1fr;gap:12px}
+    .treeGroups h3{margin:12px 0 8px;font-size:13px;color:#cfd6e6;font-weight:700;letter-spacing:.3px}
+    .tiles{display:flex;flex-direction:column;gap:8px}
+    .tile{display:flex;gap:10px;align-items:center;padding:10px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);cursor:pointer}
+    .tile:hover{border-color:rgba(102,126,234,.35)}
+    .tile.active{outline:3px solid rgba(102,126,234,.75)}
+    .icon{width:34px;height:34px;border-radius:12px;background:rgba(102,126,234,.18);border:1px solid rgba(102,126,234,.22);display:grid;place-items:center;font-weight:800}
+    .tname{font-weight:700;font-size:13px}
+    .tsub{font-size:12px;color:var(--muted)}
+
+    .skillHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+    .skillTitle{margin:0;font-size:16px}
+    .skillMeta{margin-top:6px;color:var(--muted);font-size:12px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+
+    /* Make tree sidebar usable on desktop */
+    @media (min-width:981px){
+      .treeGroups{position:sticky;top:12px;max-height:calc(100vh - 120px);overflow:auto}
+    }
+    /* On mobile/tablet: hide tree sidebar, use dropdown */
+    .mobileTreeRow{display:none}
+    @media (max-width:980px){
+      .skillLayout{grid-template-columns:1fr}
+      .treeGroups{display:none}
+      .mobileTreeRow{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-top:8px}
+    }
+
+    /* Modals */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}
+    .modal.show{display:flex}
+    .modalCard{width:min(760px,100%);border-radius:18px}
+    .modalTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .modalTitle{font-size:16px;font-weight:800;margin:0}
+
+    .wGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    @media (max-width:700px){.wGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    .wItem{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.18);cursor:pointer}
+    .wItem input{accent-color:var(--pri)}
+
+    /* Admin-only elements toggle */
+    .admin-only{display:none}
+    body.is-admin .admin-only{display:initial}
+
+    /* Small helpers */
+    .muted{color:var(--muted)}
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:12px 0}
+
+    /* Quest image */
+    .qimg{width:100%;max-height:240px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.10);margin-top:8px;background:rgba(0,0,0,.18)}
+    .qthumb{width:100%;max-height:160px;object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.10);margin-top:8px;background:rgba(0,0,0,.18);cursor:pointer}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12px}
+    pre{white-space:pre-wrap;word-break:break-word}
+  </style>
 </head>
 <body>
   <div class="wrap">
@@ -13,12 +121,12 @@
         <div class="logo">ER</div>
         <div>
           <div class="title">Elderrol Web App</div>
-          <div id="statusText" class="muted small">Menghubungkan ke spreadsheet…</div>
+          <div id="statusText" class="muted" style="font-size:12px">Siapkan WEB_APP_URL dulu…</div>
         </div>
       </div>
 
       <div class="rightTools">
-        <div id="modePill" class="pill">Live</div>
+        <div class="pill">Live</div>
         <button id="refreshAll" class="btn">⟳ Refresh</button>
         <button id="adminBtn" class="btn">🔐 Login Admin</button>
       </div>
@@ -36,25 +144,24 @@
       <div class="card panel">
         <div class="grid2">
           <div>
-            <div class="muted small label">Tambah Anggota</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Tambah Anggota</div>
             <div class="grid2">
               <input id="mName" class="input" placeholder="Nama (opsional)" />
               <input id="mIgn" class="input" placeholder="IGN (wajib)" />
             </div>
-            <div class="mt10">
+            <div style="margin-top:10px">
               <input id="mPhone" class="input" placeholder="No HP (opsional)" />
             </div>
-            <div class="row mt10">
+            <div class="row" style="margin-top:10px">
               <button id="mAdd" class="btn btn-primary">Tambah</button>
               <button id="mReset" class="btn">Reset</button>
               <button id="mRefresh" class="btn">Refresh</button>
             </div>
             <div id="membersAlert"></div>
           </div>
-
           <div>
-            <div class="muted small label">Daftar Anggota</div>
-            <div class="note">Nama & No HP hanya terlihat oleh admin.</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Daftar Anggota</div>
+            <div class="note" style="padding-top:0">Nama & No HP hanya terlihat oleh admin.</div>
             <div id="mList"></div>
           </div>
         </div>
@@ -64,13 +171,13 @@
     <!-- Skills -->
     <section id="skills" class="section">
       <div class="skillLayout">
-        <!-- Left tree panel (desktop) -->
-        <div class="card panel treePane treeGroups">
-          <div class="row between">
+        <div class="card panel treeGroups">
+          <div class="row" style="justify-content:space-between">
             <div>
-              <div class="muted small">Skill Tree</div>
-              <div class="note">Klik tree untuk lihat skill.</div>
+              <div class="muted" style="font-size:12px">Skill Tree</div>
+              <div class="note" style="margin:0;padding:6px 0 0">Klik tree untuk lihat skill.</div>
             </div>
+            <button id="addTreeBtn" class="btn btn-primary admin-only">+ Tree</button>
           </div>
 
           <div class="hr"></div>
@@ -88,33 +195,34 @@
           <div id="gOther" class="tiles"></div>
         </div>
 
-        <!-- Right -->
         <div class="card panel">
           <div class="skillHead">
             <div>
               <h2 id="treeTitle" class="skillTitle">Belum memilih tree</h2>
-              <div id="treeMeta" class="skillMeta">Pilih tree untuk menampilkan daftar skill.</div>
+              <div id="treeMeta" class="skillMeta">Klik salah satu tree di panel kiri.</div>
+
+              <div class="mobileTreeRow">
+                <div style="min-width:220px">
+                  <div class="muted" style="font-size:12px;margin-bottom:6px">Pilih tree</div>
+                  <select id="mobileTreeSelect"></select>
+                </div>
+                <button id="mobileOpenTree" class="btn admin-only">Kelola Tree</button>
+              </div>
             </div>
 
-            <div class="skillHeadRight">
-              <!-- Mobile tree select -->
-              <div class="treeSelectMobileWrap">
-                <div class="muted small label">Pilih tree</div>
-                <select id="treeSelectMobile"></select>
-              </div>
-
-              <div class="searchWrap">
-                <div class="muted small label">Cari skill</div>
+            <div class="row" style="align-items:flex-end">
+              <div style="min-width:220px;flex:1">
+                <div class="muted" style="font-size:12px;margin-bottom:6px">Cari skill</div>
                 <input id="skillSearch" class="input" placeholder="Cari nama / deskripsi" />
               </div>
-
               <div id="skillActions" class="row admin-only" style="display:none">
                 <button id="addSkill" class="btn btn-primary">+ Skill</button>
+                <button id="editTree" class="btn">Edit Tree</button>
               </div>
             </div>
           </div>
 
-          <div id="skillList" class="mt12"></div>
+          <div id="skillList" style="margin-top:12px"></div>
           <div id="skillsAlert"></div>
         </div>
       </div>
@@ -125,105 +233,89 @@
       <div class="card panel">
         <div class="grid2">
           <div>
-            <div class="muted small label">Kirim Pengumpulan Quest</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Kirim Pengumpulan Quest</div>
             <input id="qIgn" class="input" placeholder="IGN (wajib)" />
-
-            <div class="mt10">
-              <div class="muted small label">Screenshot (gambar)</div>
+            <div style="margin-top:10px">
               <input id="qFile" class="input" type="file" accept="image/*" />
-              <div id="qPreview" class="qPreview"></div>
-              <div class="note">Gambar akan di-upload ke ImgBB, lalu URL-nya disimpan ke Spreadsheet.</div>
+              <img id="qPreview" class="qimg" alt="Preview" style="display:none" />
+              <div class="note" style="padding:6px 2px 0">Upload screenshot (gambar). Akan disimpan ke ImgBB.</div>
             </div>
-
-            <div class="row mt10">
-              <button id="qSubmit" class="btn btn-primary">Kirim</button>
+            <div class="row" style="margin-top:10px">
+              <button id="qSubmit" class="btn btn-primary">Upload</button>
               <button id="qRefresh" class="btn">Refresh</button>
             </div>
             <div id="questsAlert"></div>
           </div>
-
           <div>
-            <div class="muted small label">Daftar Pengumpulan</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Daftar Pengumpulan</div>
             <div id="qList"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Info (Neura) -->
+    <!-- Info (Neura via Proxy) -->
     <section id="info" class="section">
       <div class="card panel">
-        <div class="infoGrid">
-          <div class="infoCard">
-            <div class="infoHead">
-              <div>
-                <div class="infoTitle">Banner Ava</div>
-                <div class="infoMeta">Sumber: Neura API</div>
-              </div>
-              <button id="loadBanner" class="btn">Muat</button>
+        <div class="muted" style="font-size:12px;margin-bottom:10px">
+          Info menggunakan Neura API lewat proxy Apps Script (anti CORS).
+        </div>
+
+        <div class="grid2">
+          <div class="card panel" style="background:rgba(0,0,0,.14)">
+            <div class="row" style="justify-content:space-between">
+              <b>Banner Ava</b>
+              <button id="infoBannerBtn" class="btn">Load</button>
             </div>
-            <div id="bannerBox" class="infoBody"></div>
+            <div id="infoBannerOut" class="note"></div>
           </div>
 
-          <div class="infoCard">
-            <div class="infoHead">
-              <div>
-                <div class="infoTitle">Buff</div>
-                <div class="infoMeta">List + Search buff terbaru</div>
-              </div>
-              <button id="loadBuff" class="btn">Muat</button>
+          <div class="card panel" style="background:rgba(0,0,0,.14)">
+            <div class="row" style="justify-content:space-between">
+              <b>Buff</b>
+              <button id="infoBuffListBtn" class="btn">List</button>
             </div>
-
-            <div class="row mt10">
-              <input id="buffQuery" class="input" placeholder="Cari buff… (contoh: atk)" />
-              <button id="searchBuff" class="btn btn-primary">Cari</button>
+            <div class="row" style="margin-top:8px">
+              <input id="infoBuffQ" class="input" placeholder="Search idname (contoh: atk)" />
+              <button id="infoBuffSearchBtn" class="btn btn-primary">Search</button>
             </div>
-            <div id="buffBox" class="infoBody mt10"></div>
-          </div>
-
-          <div class="infoCard">
-            <div class="infoHead">
-              <div>
-                <div class="infoTitle">Spot Leveling</div>
-                <div class="infoMeta">Rute/spot leveling berdasar level</div>
-              </div>
-              <button id="loadLevel" class="btn">Muat</button>
-            </div>
-
-            <div class="grid2 mt10">
-              <div>
-                <div class="muted small label">Current Level</div>
-                <input id="lvCurrent" class="input" placeholder="contoh: 120" />
-              </div>
-              <div>
-                <div class="muted small label">Range</div>
-                <input id="lvRange" class="input" placeholder="contoh: 10" />
-              </div>
-            </div>
-            <div class="row mt10">
-              <button id="searchLevel" class="btn btn-primary">Cari Spot</button>
-            </div>
-            <div id="levelBox" class="infoBody mt10"></div>
-          </div>
-
-          <div class="infoCard">
-            <div class="infoHead">
-              <div>
-                <div class="infoTitle">Item, Ability (ID), Xtal/Regis/Rute</div>
-                <div class="infoMeta">Butuh endpoint tambahan dari Neura API.</div>
-              </div>
-            </div>
-            <div class="note">
-              Dari root Neura API yang kamu kasih, endpoint yang diumumkan baru: <b>/bannerava</b>, <b>/buff</b>, dan <b>/lv</b>.
-              Kalau kamu punya endpoint untuk item / ability / xtal / regis / rute, tinggal isi di bawah lalu coba.
-            </div>
-            <div class="row mt10">
-              <input id="customPath" class="input" placeholder="/xtal atau /item atau /ability" />
-              <button id="tryCustom" class="btn btn-primary">Coba</button>
-            </div>
-            <div id="customBox" class="infoBody mt10"></div>
+            <div id="infoBuffOut" class="note"></div>
           </div>
         </div>
+
+        <div class="grid2" style="margin-top:12px">
+          <div class="card panel" style="background:rgba(0,0,0,.14)">
+            <b>Spot Leveling</b>
+            <div class="row" style="margin-top:8px">
+              <input id="infoLvCur" class="input" placeholder="current (contoh: 250)" />
+              <input id="infoLvRange" class="input" placeholder="range (contoh: 10)" />
+              <button id="infoLvBtn" class="btn btn-primary">Cari</button>
+            </div>
+            <div id="infoLvOut" class="note"></div>
+          </div>
+
+          <div class="card panel" style="background:rgba(0,0,0,.14)">
+            <div class="row" style="justify-content:space-between">
+              <b>Ability (Translate)</b>
+              <button id="infoAbilityListBtn" class="btn">List</button>
+            </div>
+            <div class="row" style="margin-top:8px">
+              <input id="infoAbilityQ" class="input" placeholder="Search (contoh: critical)" />
+              <button id="infoAbilitySearchBtn" class="btn btn-primary">Search</button>
+            </div>
+            <div id="infoAbilityOut" class="note"></div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Neura Endpoint Tester</div>
+        <div class="row">
+          <input id="infoPath" class="input mono" placeholder="Contoh: buff, buff/idname=atk, lv/current=250&range=10" />
+          <button id="infoTestBtn" class="btn btn-primary">Test</button>
+        </div>
+        <pre id="infoRaw" class="mono" style="margin-top:10px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:10px;min-height:72px"></pre>
+
+        <div id="infoAlert"></div>
       </div>
     </section>
   </div>
@@ -237,9 +329,9 @@
           <button id="adminCancel" class="btn">Tutup</button>
         </div>
         <div class="hr"></div>
-        <div class="muted small label">Password</div>
+        <div class="muted" style="font-size:12px;margin-bottom:6px">Password</div>
         <input id="adminPass" class="input" type="password" placeholder="Masukkan password" />
-        <div class="row mt10">
+        <div class="row" style="margin-top:10px">
           <button id="adminLogin" class="btn btn-primary">Login</button>
         </div>
         <div id="adminAlert"></div>
@@ -260,11 +352,11 @@
 
         <div class="grid2">
           <div>
-            <div class="muted small label">Skill Tree</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Skill Tree</div>
             <select id="smTree"></select>
           </div>
           <div>
-            <div class="muted small label">Jenis</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Jenis</div>
             <select id="smKind">
               <option value="Active">Aktif</option>
               <option value="Passive">Pasif</option>
@@ -273,40 +365,1188 @@
           </div>
         </div>
 
-        <div class="grid2 mt10">
+        <div style="margin-top:10px" class="grid2">
           <div>
-            <div class="muted small label">Nama Skill</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Nama Skill</div>
             <input id="smName" class="input" placeholder="Contoh: Astute" />
           </div>
           <div>
-            <div class="muted small label">Level</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Level</div>
             <input id="smLevel" class="input" placeholder="Contoh: Lv.10 / -" />
           </div>
         </div>
 
-        <div class="grid2 mt10">
+        <div style="margin-top:10px" class="grid2">
           <div>
-            <div class="muted small label">MP</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">MP</div>
             <input id="smMp" class="input" placeholder="Contoh: 100" />
           </div>
           <div>
-            <div class="muted small label">Senjata</div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Senjata</div>
             <div id="smWeapons" class="wGrid"></div>
           </div>
         </div>
 
-        <div class="mt10">
-          <div class="muted small label">Deskripsi</div>
+        <div style="margin-top:10px">
+          <div class="muted" style="font-size:12px;margin-bottom:6px">Deskripsi</div>
           <textarea id="smDesc" placeholder="Deskripsi singkat"></textarea>
         </div>
 
-        <div class="row mt12">
+        <div class="row" style="margin-top:12px">
           <button id="smSave" class="btn btn-primary">Simpan</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="./app.js"></script>
+  <!-- Tree Modal -->
+  <div id="treeModal" class="modal" aria-hidden="true">
+    <div class="card modalCard">
+      <div class="panel">
+        <div class="modalTop">
+          <h3 id="treeModalTitle" class="modalTitle">Tambah Skill Tree</h3>
+          <button id="tmCancel" class="btn">Tutup</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="grid2">
+          <div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Group</div>
+            <select id="tmGroup">
+              <option value="Weapon">Weapon</option>
+              <option value="Buff">Buff</option>
+              <option value="Assist">Assist</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <div class="muted" style="font-size:12px;margin-bottom:6px">Nama Tree</div>
+            <input id="tmName" class="input" placeholder="Contoh: Blade Skills" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button id="tmSave" class="btn btn-primary">Simpan</button>
+          <button id="tmDelete" class="btn btn-danger" style="display:none">Hapus Tree</button>
+        </div>
+        <div id="treesAlert"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    "use strict";
+
+    // =========================
+    // WAJIB: isi URL Web App Apps Script kamu di sini
+    // Contoh: https://script.google.com/macros/s/XXXX/exec
+    // =========================
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxhQDbT_tIDPNF3jKpANN8_dAbSTDh9hsFmivpkBorY9XY0r8bTO6T9oRS3tw8AQTGNiw/exec"; // <-- tempel URL kamu
+
+    // ImgBB (screenshot quest)
+    const IMGBB_KEY = "05d83387b53dda1991a18490ac86430a";
+
+    const ADMIN_PASSWORD = "Elderrol";
+    const ADMIN_KEY = "elderrol_admin";
+
+    // Default trees (akan digabung dengan tree custom yang disimpan di sheet Skills kolom J-M)
+    const DEFAULT_TREES = [
+      // Weapon
+      {key:'Blade', label:'Blade Skills', group:'Weapon', icon:'BL'},
+      {key:'Shot', label:'Shot Skills', group:'Weapon', icon:'SH'},
+      {key:'Magic', label:'Magic Skills', group:'Weapon', icon:'MG'},
+      {key:'Martial', label:'Martial Skills', group:'Weapon', icon:'MR'},
+      {key:'DualSword', label:'DualSword Skills', group:'Weapon', icon:'DS'},
+      {key:'Halberd', label:'Halberd Skills', group:'Weapon', icon:'HB'},
+      {key:'Mononofu', label:'Mononofu Skills', group:'Weapon', icon:'MN'},
+      {key:'Barehand', label:'Barehand Skills', group:'Weapon', icon:'BH'},
+      {key:'Crusher', label:'Crusher Skills', group:'Weapon', icon:'CR'},
+      {key:'Sprite', label:'Sprite Skills', group:'Weapon', icon:'SP'},
+      // Buff
+      {key:'Guard', label:'Guard Skills', group:'Buff', icon:'GD'},
+      {key:'Shield', label:'Shield Skills', group:'Buff', icon:'SD'},
+      {key:'Dagger', label:'Dagger Skills', group:'Buff', icon:'DG'},
+      {key:'Knight', label:'Knight Skills', group:'Buff', icon:'KN'},
+      {key:'Priest', label:'Priest Skills', group:'Buff', icon:'PR'},
+      {key:'Assassin', label:'Assassin Skills', group:'Buff', icon:'AS'},
+      {key:'Wizard', label:'Wizard Skills', group:'Buff', icon:'WZ'},
+      {key:'Hunter', label:'Hunter Skills', group:'Buff', icon:'HT'},
+      {key:'DarkPower', label:'DarkPower Skills', group:'Buff', icon:'DP'},
+      {key:'MagicBlade', label:'MagicBlade Skills', group:'Buff', icon:'MB'},
+      {key:'Ninja', label:'Ninja Skills', group:'Buff', icon:'NJ'},
+      {key:'Partisan', label:'Partisan Skills', group:'Buff', icon:'PT'},
+      {key:'Necromancer', label:'Necromancer Skills', group:'Buff', icon:'NC'},
+      // Assist
+      {key:'Survival', label:'Survival Skills', group:'Assist', icon:'SV'},
+      {key:'Support', label:'Support Skills', group:'Assist', icon:'SU'},
+      {key:'Minstrel', label:'Minstrel Skills', group:'Assist', icon:'MS'},
+      {key:'Dancer', label:'Dancer Skills', group:'Assist', icon:'DC'},
+      {key:'Battle', label:'Battle Skills', group:'Assist', icon:'BT'},
+      {key:'Golem', label:'Golem Skills', group:'Assist', icon:'GL'},
+      // Other
+      {key:'Smith', label:'Smith Skills', group:'Other', icon:'SM'},
+      {key:'Alchemy', label:'Alchemy Skills', group:'Other', icon:'AL'},
+      {key:'Tamer', label:'Tamer Skills', group:'Other', icon:'TM'},
+      {key:'Scroll', label:'Scroll Skills', group:'Other', icon:'SC'},
+    ];
+
+    const WEAPONS = [
+      {key:'1HS', label:'One-Hand Sword'},
+      {key:'2HS', label:'Two-Hand Sword'},
+      {key:'DS',  label:'Dual Swords'},
+      {key:'BW',  label:'Bow'},
+      {key:'BG',  label:'Bowgun'},
+      {key:'ST',  label:'Staff'},
+      {key:'MD',  label:'Magic Device'},
+      {key:'KN',  label:'Knuckle'},
+      {key:'HB',  label:'Halberd'},
+      {key:'KT',  label:'Katana'},
+      {key:'BH',  label:'Barehand'},
+      {key:'SH',  label:'Shield'},
+      {key:'DG',  label:'Dagger'},
+    ];
+
+    // =========================
+    // DOM + utils
+    // =========================
+    const $ = (id)=>document.getElementById(id);
+
+    function escapeHtml(t){
+      const d = document.createElement('div');
+      d.textContent = String(t == null ? '' : t);
+      return d.innerHTML;
+    }
+
+    function fmt(ts){
+      try{
+        return new Date(Number(ts)).toLocaleString('id-ID',{
+          day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'
+        });
+      }catch(e){
+        return '-';
+      }
+    }
+
+    function setStatus(text){
+      $('statusText').textContent = text;
+    }
+
+    function alertBox(target,msg,type){
+      const cls = type==='ok'?'ok': type==='err'?'err':'info';
+      const el = $(target);
+      if(!el) return;
+      el.innerHTML = '<div class="alert '+cls+'">'+escapeHtml(msg)+'</div>';
+      setTimeout(()=>{ if(el) el.innerHTML=''; }, 3200);
+    }
+
+    async function runBusy(btn, busyText, fn){
+      if(!btn) return fn();
+      const oldText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = busyText || 'Proses...';
+      try{
+        const out = await fn();
+        return out;
+      }finally{
+        btn.disabled = false;
+        btn.textContent = oldText;
+      }
+    }
+
+    function normalizeGroup(g){
+      const ok = ['Weapon','Buff','Assist','Other'];
+      return ok.indexOf(g)>=0 ? g : 'Other';
+    }
+
+    function makeTreeIcon(name){
+      const s = String(name||'').trim();
+      if(!s) return 'TR';
+      const words = s.split(' ').filter(Boolean);
+      const a = (words[0] && words[0][0]) ? words[0][0] : (s[0] || 'T');
+      const b = (words[1] && words[1][0]) ? words[1][0] : (s[1] || 'R');
+      return String(a+b).toUpperCase();
+    }
+
+    function makeTreeKey(name, trees){
+      const base = String(name||'').trim().replace(/[^a-z0-9]+/gi,'').slice(0,16) || 'Tree';
+      const existing = new Set((trees||[]).map(t=>t.key));
+      if(!existing.has(base)) return base;
+      let i=2;
+      while(existing.has(base+i)) i++;
+      return base+i;
+    }
+
+    function weaponLabel(k){
+      const w = WEAPONS.find(x=>x.key===k);
+      return w ? w.label : k;
+    }
+
+    function weaponLabelList(keys){
+      const arr = Array.isArray(keys) ? keys.filter(Boolean) : [];
+      if(arr.length===0) return 'Semua Senjata';
+      return arr.map(weaponLabel).join(', ');
+    }
+
+    function kindLabel(k){
+      return (k==='Passive') ? 'Pasif' : (k==='Extra' ? 'Extra' : 'Aktif');
+    }
+
+    // =========================
+    // JSONP API (Apps Script)
+    // =========================
+    function toB64(str){
+      try{ return btoa(unescape(encodeURIComponent(String(str)))); }catch(e){ return ''; }
+    }
+
+    function apiJsonp(action, payload){
+      return new Promise((resolve, reject)=>{
+        if(!WEB_APP_URL) return reject(new Error('WEB_APP_URL belum diisi'));
+        const cb = '__elderrol_cb_' + Math.random().toString(16).slice(2);
+        let script = null;
+
+        const timer = setTimeout(()=>{
+          cleanup();
+          reject(new Error('Timeout memanggil Apps Script'));
+        }, 15000);
+
+        function cleanup(){
+          clearTimeout(timer);
+          try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+          if(script && script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[cb] = (data)=>{ cleanup(); resolve(data); };
+
+        const sep = WEB_APP_URL.indexOf('?')>=0 ? '&' : '?';
+        const q = [
+          'action=' + encodeURIComponent(action),
+          'callback=' + encodeURIComponent(cb),
+          'payload=' + encodeURIComponent(toB64(JSON.stringify(payload || {})))
+        ];
+
+        script = document.createElement('script');
+        script.async = true;
+        script.src = WEB_APP_URL + sep + q.join('&');
+        script.onerror = ()=>{ cleanup(); reject(new Error('Gagal load JSONP (cek URL WebApp / akses publik)')); };
+        document.body.appendChild(script);
+      });
+    }
+
+    async function apiCall(action, payload){
+      const res = await apiJsonp(action, payload);
+      if(!res || res.ok===false) throw new Error((res && res.error) ? res.error : 'API error');
+      return res;
+    }
+
+    async function neura(path){
+      const res = await apiCall('neura_proxy', {path: String(path||'')});
+      return res.data;
+    }
+
+    // =========================
+    // Cleaners
+    // =========================
+    function cleanTreeObj(t){
+      const key = String(t.key||'').trim();
+      const label = String(t.label||t.name||'').trim();
+      const group = normalizeGroup(String(t.group||'Other').trim());
+      const icon = String(t.icon||'').trim() || makeTreeIcon(label);
+      const updatedAt = Number(t.updatedAt || Date.now());
+      return {key,label,group,icon,updatedAt};
+    }
+
+    function cleanSkillObj(s){
+      const id = String(s.id||'').trim() || ('s'+Math.random().toString(16).slice(2));
+      const type = String(s.type||s.tree||'').trim();
+      const kind = String(s.kind||'Active').trim() || 'Active';
+      const name = String(s.name||'').trim();
+      const level = String(s.level||'').trim();
+      const desc = String(s.desc||'').trim();
+
+      const weapons = Array.isArray(s.weapons)
+        ? s.weapons.map(x=>String(x).trim()).filter(Boolean)
+        : String(s.weapons||'').split(',').map(x=>x.trim()).filter(Boolean);
+
+      const mpRaw = s.mp;
+      const mpNum = Number(mpRaw);
+      const mp = (mpRaw==='' || mpRaw==null || Number.isNaN(mpNum)) ? '' : mpNum;
+
+      const updatedAt = Number(s.updatedAt || Date.now());
+      return {id,type,kind,weapons,name,level,mp,desc,updatedAt};
+    }
+
+    function cleanMemberObj(m){
+      const id = String(m.id||'').trim() || ('m'+Math.random().toString(16).slice(2));
+      const ign = String(m.ign||'').trim();
+      const name = String(m.name||'').trim();
+      const phone = String(m.phone||'').trim();
+      const timestamp = Number(m.timestamp || Date.now());
+      return {id, ign, name, phone, timestamp};
+    }
+
+    function cleanQuestObj(q){
+      const id = String(q.id||'').trim() || ('q'+Math.random().toString(16).slice(2));
+      const ign = String(q.ign||'').trim();
+      const screenshotUrl = String(q.screenshotUrl||q.url||'').trim();
+      const timestamp = Number(q.timestamp || Date.now());
+      return {id, ign, screenshotUrl, timestamp};
+    }
+
+    // =========================
+    // State
+    // =========================
+    let TREES = DEFAULT_TREES.slice();
+    let skills = [];
+    let members = [];
+    let quests = [];
+
+    let isAdmin = sessionStorage.getItem(ADMIN_KEY) === 'true';
+    let selectedTree = '';
+    let editingSkillId = '';
+    let editingTreeKey = '';
+
+    function canManage(){ return !!isAdmin; }
+    function applyAdminVisibility(){ document.body.classList.toggle('is-admin', !!isAdmin); }
+
+    // =========================
+    // Renderers
+    // =========================
+    function renderMembers(){
+      const showPrivate = !!isAdmin;
+      const list = members.slice().sort((a,b)=>Number(b.timestamp)-Number(a.timestamp));
+
+      const rows = list.map(m=>{
+        const actions = showPrivate
+          ? '<button class="btn btn-danger" data-action="member-delete" data-id="'+escapeHtml(m.id)+'">Hapus</button>'
+          : '';
+
+        const privateLine = showPrivate
+          ? '<div class="smeta">Nama: '+escapeHtml(m.name||'-')+' | HP: '+escapeHtml(m.phone||'-')+'</div>'
+          : '';
+
+        return (
+          '<div class="skill-card">'
+          + '<div class="skill-card-top">'
+          +   '<div>'
+          +     '<div class="sname">'+escapeHtml(m.ign)+'</div>'
+          +     '<div class="smeta">'+escapeHtml(fmt(m.timestamp))+'</div>'
+          +     privateLine
+          +   '</div>'
+          +   actions
+          + '</div>'
+          + '</div>'
+        );
+      }).join('');
+
+      $('mList').innerHTML = rows || '<div class="note">Belum ada anggota.</div>';
+    }
+
+    function renderQuests(){
+      const showActions = !!isAdmin;
+      const list = quests.slice().sort((a,b)=>Number(b.timestamp)-Number(a.timestamp));
+
+      const rows = list.map(q=>{
+        const actions = showActions
+          ? '<button class="btn btn-danger" data-action="quest-delete" data-id="'+escapeHtml(q.id)+'">Hapus</button>'
+          : '';
+
+        const img = q.screenshotUrl
+          ? '<img class="qthumb" src="'+escapeHtml(q.screenshotUrl)+'" alt="Screenshot" data-img="'+escapeHtml(q.screenshotUrl)+'" />'
+          : '<div class="note">Tidak ada gambar</div>';
+
+        return (
+          '<div class="skill-card">'
+          + '<div class="skill-card-top">'
+          +   '<div>'
+          +     '<div class="sname">IGN: '+escapeHtml(q.ign)+'</div>'
+          +     '<div class="smeta">'+escapeHtml(fmt(q.timestamp))+'</div>'
+          +   '</div>'
+          +   actions
+          + '</div>'
+          + img
+          + '</div>'
+        );
+      }).join('');
+
+      $('qList').innerHTML = rows || '<div class="note">Belum ada pengumpulan quest.</div>';
+    }
+
+    function treeLabelByKey(key){
+      const t = TREES.find(x=>String(x.key)===String(key));
+      return t ? t.label : String(key||'');
+    }
+
+    function renderTreeMenu(){
+      const groups = {Weapon:[], Buff:[], Assist:[], Other:[]};
+      TREES.forEach(t=>{ groups[normalizeGroup(t.group)].push(t); });
+
+      function tileHtml(t){
+        const active = (t.key===selectedTree) ? ' active' : '';
+        return (
+          '<div class="tile'+active+'" data-tree="'+escapeHtml(t.key)+'">'
+          + '<div class="icon">'+escapeHtml(t.icon||makeTreeIcon(t.label))+'</div>'
+          + '<div>'
+          +   '<div class="tname">'+escapeHtml(t.label)+'</div>'
+          +   '<div class="tsub">'+escapeHtml(t.group)+'</div>'
+          + '</div>'
+          + '</div>'
+        );
+      }
+
+      $('gWeapon').innerHTML = groups.Weapon.map(tileHtml).join('') || '<div class="note">-</div>';
+      $('gBuff').innerHTML   = groups.Buff.map(tileHtml).join('')   || '<div class="note">-</div>';
+      $('gAssist').innerHTML = groups.Assist.map(tileHtml).join('') || '<div class="note">-</div>';
+      $('gOther').innerHTML  = groups.Other.map(tileHtml).join('')  || '<div class="note">-</div>';
+
+      document.querySelectorAll('.tile[data-tree]').forEach(tile=>{
+        tile.onclick = ()=>{
+          selectedTree = tile.dataset.tree || '';
+          $('mobileTreeSelect').value = selectedTree;
+          renderTreeMenu();
+          renderSkillRight();
+          syncSkillActions();
+        };
+      });
+
+      const options = TREES.map(t=>'<option value="'+escapeHtml(t.key)+'">'+escapeHtml(t.label)+'</option>').join('');
+      $('smTree').innerHTML = options;
+      $('mobileTreeSelect').innerHTML = '<option value="">-- pilih --</option>'+options;
+      if(selectedTree) $('mobileTreeSelect').value = selectedTree;
+    }
+
+    function syncSkillActions(){
+      const can = canManage();
+      const showActions = (!!selectedTree && can);
+      $('skillActions').style.display = showActions ? '' : 'none';
+
+      $('treeTitle').textContent = selectedTree ? treeLabelByKey(selectedTree) : 'Belum memilih tree';
+      $('treeMeta').textContent = selectedTree ? 'Pilih skill di tree ini.' : 'Klik salah satu tree di panel kiri (atau dropdown di mobile).';
+    }
+
+    function renderSkillRight(){
+      if(!selectedTree){
+        $('skillList').innerHTML = '<div class="note">Pilih tree untuk menampilkan daftar skill.</div>';
+        return;
+      }
+
+      const q = $('skillSearch').value.trim().toLowerCase();
+      const list = skills
+        .filter(s=>String(s.type||'')===String(selectedTree))
+        .filter(s=>{
+          if(!q) return true;
+          const hay = (String(s.name||'')+' '+String(s.desc||'')+' '+String(s.level||'')+' '+String(s.kind||'')).toLowerCase();
+          return hay.indexOf(q)>=0;
+        })
+        .slice()
+        .sort((a,b)=>Number(b.updatedAt)-Number(a.updatedAt));
+
+      if(list.length===0){
+        $('skillList').innerHTML = '<div class="note">Belum ada skill di tree ini.</div>';
+        return;
+      }
+
+      const can = canManage();
+
+      function skillCard(s){
+        const mpTxt = (s.mp==='' || s.mp==null) ? '' : (' | MP: '+escapeHtml(s.mp));
+        const meta = kindLabel(s.kind||'Active')
+          + ' | Senjata: ' + escapeHtml(weaponLabelList(s.weapons))
+          + (s.level ? (' | '+escapeHtml(s.level)) : '')
+          + mpTxt
+          + ' | Update: ' + escapeHtml(fmt(s.updatedAt));
+
+        const actions = can
+          ? (
+            '<div class="toolbar">'
+            + '<button class="btn btn-ghost" data-action="skill-edit" data-id="'+escapeHtml(s.id)+'">Edit</button>'
+            + '<button class="btn btn-danger" data-action="skill-delete" data-id="'+escapeHtml(s.id)+'">Hapus</button>'
+            + '</div>'
+          )
+          : '';
+
+        return (
+          '<div class="skill-card">'
+          + '<div class="skill-card-top">'
+          +   '<div>'
+          +     '<div class="sname">'+escapeHtml(s.name)+'</div>'
+          +     '<div class="smeta">'+meta+'</div>'
+          +   '</div>'
+          +   actions
+          + '</div>'
+          + '<div class="sdesc">'+escapeHtml(s.desc||'-')+'</div>'
+          + '</div>'
+        );
+      }
+
+      const grouped = {Active:[], Passive:[], Extra:[]};
+      list.forEach(s=>{
+        const k = (s.kind==='Passive' || s.kind==='Extra') ? s.kind : 'Active';
+        grouped[k].push(s);
+      });
+
+      let html = '';
+      ['Active','Passive','Extra'].forEach(k=>{
+        if(grouped[k].length===0) return;
+        html += '<div class="group" style="margin-top:6px"><h3>'+escapeHtml(kindLabel(k))+'</h3></div>';
+        html += grouped[k].map(skillCard).join('');
+      });
+
+      $('skillList').innerHTML = html;
+    }
+
+    // =========================
+    // Modals
+    // =========================
+    const adminModal = $('adminModal');
+    const skillModal = $('skillModal');
+    const treeModal = $('treeModal');
+
+    function openAdminModal(){
+      adminModal.classList.add('show');
+      $('adminPass').value='';
+      $('adminPass').focus();
+    }
+    function closeAdminModal(){ adminModal.classList.remove('show'); }
+
+    function buildWeaponChecks(selectedKeys){
+      const set = new Set(Array.isArray(selectedKeys) ? selectedKeys : []);
+      $('smWeapons').innerHTML = WEAPONS.map(w=>{
+        const checked = set.has(w.key) ? ' checked' : '';
+        return (
+          '<label class="wItem">'
+          + '<input type="checkbox" value="'+escapeHtml(w.key)+'"'+checked+' />'
+          + '<span>'+escapeHtml(w.label)+'</span>'
+          + '</label>'
+        );
+      }).join('');
+    }
+
+    function openSkillModal(mode, data){
+      if(!canManage()){ alertBox('skillsAlert','Hanya admin yang bisa tambah/edit skill','err'); return; }
+      editingSkillId = (mode==='edit' && data) ? String(data.id) : '';
+      $('skillModalTitle').textContent = (editingSkillId ? 'Edit Skill' : 'Tambah Skill');
+
+      const defaultTree = selectedTree || (TREES[0] ? TREES[0].key : '');
+      $('smTree').value  = String((data && data.type) ? data.type : defaultTree);
+      $('smKind').value  = String((data && data.kind) ? data.kind : 'Active');
+      $('smName').value  = String((data && data.name) ? data.name : '');
+      $('smLevel').value = String((data && data.level) ? data.level : '');
+      $('smMp').value    = (data && data.mp!=='' && data.mp!=null) ? String(data.mp) : '';
+      $('smDesc').value  = String((data && data.desc) ? data.desc : '');
+
+      buildWeaponChecks(data ? data.weapons : []);
+      skillModal.classList.add('show');
+    }
+
+    function closeSkillModal(){ skillModal.classList.remove('show'); }
+
+    function isDefaultTreeKey(key){ return DEFAULT_TREES.some(t=>t.key===key); }
+
+    function openTreeModal(mode, data){
+      if(!canManage()){ alertBox('skillsAlert','Hanya admin yang bisa tambah/edit tree','err'); return; }
+      editingTreeKey = (mode==='edit' && data) ? String(data.key) : '';
+
+      $('treeModalTitle').textContent = editingTreeKey ? 'Edit Skill Tree' : 'Tambah Skill Tree';
+      $('tmGroup').value = data ? normalizeGroup(String(data.group||'Other')) : 'Weapon';
+      $('tmName').value  = data ? String(data.label||'') : '';
+
+      $('tmDelete').style.display = (editingTreeKey && !isDefaultTreeKey(editingTreeKey)) ? '' : 'none';
+      treeModal.classList.add('show');
+    }
+
+    function closeTreeModal(){ treeModal.classList.remove('show'); }
+
+    // =========================
+    // Live refresh
+    // =========================
+    async function liveRefreshAll(){
+      const r1 = await apiCall('trees_list', {});
+      const r2 = await apiCall('skills_list', {});
+      const r3 = await apiCall('members_list', {});
+      const r4 = await apiCall('quests_list', {});
+
+      const byKey = new Map(DEFAULT_TREES.map(t=>[t.key,{...t}]));
+      (Array.isArray(r1.data)?r1.data:[]).map(cleanTreeObj).forEach(t=>{ if(t.key && t.label) byKey.set(t.key,t); });
+
+      TREES = Array.from(byKey.values());
+      skills  = (Array.isArray(r2.data)?r2.data:[]).map(cleanSkillObj).filter(s=>s.type && s.name);
+      members = (Array.isArray(r3.data)?r3.data:[]).map(cleanMemberObj).filter(m=>m.ign);
+      quests  = (Array.isArray(r4.data)?r4.data:[]).map(cleanQuestObj).filter(q=>q.ign);
+
+      if(!selectedTree && TREES[0]) selectedTree = TREES[0].key;
+    }
+
+    // =========================
+    // ImgBB Upload
+    // =========================
+    async function uploadToImgBB(file){
+      if(!file) throw new Error('File belum dipilih');
+      if(!IMGBB_KEY) throw new Error('IMGBB_KEY kosong');
+      const form = new FormData();
+      form.append('image', file);
+      const res = await fetch('https://api.imgbb.com/1/upload?key='+encodeURIComponent(IMGBB_KEY), {
+        method:'POST',
+        body: form
+      });
+      const data = await res.json().catch(()=>null);
+      if(!data || !data.success || !data.data || !data.data.url){
+        const msg = (data && data.error && data.error.message) ? data.error.message : 'Upload ImgBB gagal';
+        throw new Error(msg);
+      }
+      return data.data.url;
+    }
+
+    // =========================
+    // Info render helpers
+    // =========================
+    function setJson(elId, data){
+      const el = $(elId);
+      if(!el) return;
+      const s = JSON.stringify(data, null, 2);
+      el.innerHTML = '<pre class="mono">'+escapeHtml(s)+'</pre>';
+    }
+
+    function summarizeArray(arr, pickKeys){
+      if(!Array.isArray(arr)) return null;
+      const keys = Array.isArray(pickKeys) ? pickKeys : ['name','title','idname','id','desc','description'];
+      return arr.slice(0, 30).map(x=>{
+        if(x && typeof x==='object'){
+          const o = {};
+          keys.forEach(k=>{ if(x[k]!=null) o[k]=x[k]; });
+          return Object.keys(o).length ? o : x;
+        }
+        return x;
+      });
+    }
+
+    // =========================
+    // Boot + UI sync
+    // =========================
+    function syncAllUI(){
+      applyAdminVisibility();
+      $('adminBtn').textContent = isAdmin ? '👤 Admin (Logout)' : '🔐 Login Admin';
+      renderMembers();
+      renderQuests();
+      renderTreeMenu();
+      syncSkillActions();
+      renderSkillRight();
+    }
+
+    async function boot(showToast){
+      if(!WEB_APP_URL){
+        setStatus('WEB_APP_URL belum diisi (edit index.html).');
+        syncAllUI();
+        return;
+      }
+      setStatus('Sinkronisasi data…');
+      try{
+        await liveRefreshAll();
+        setStatus('Terhubung ✓');
+        syncAllUI();
+        if(showToast) alertBox('skillsAlert','Refreshed','info');
+      }catch(e){
+        setStatus('Gagal konek: '+e.message);
+        alertBox('skillsAlert','Gagal sync: '+e.message,'err');
+      }
+    }
+
+    // =========================
+    // Events
+    // =========================
+    document.querySelectorAll('.tab').forEach(tab=>{
+      tab.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+        tab.classList.add('active');
+        const key = tab.dataset.tab;
+        document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+        $(key).classList.add('active');
+      });
+    });
+
+    $('refreshAll').addEventListener('click', async ()=>{
+      await runBusy($('refreshAll'),'Refresh…', ()=>boot(false));
+    });
+
+    $('adminBtn').addEventListener('click', ()=>{
+      if(isAdmin){
+        if(confirm('Logout admin?')){
+          isAdmin=false;
+          sessionStorage.removeItem(ADMIN_KEY);
+          syncAllUI();
+          alertBox('adminAlert','Logout berhasil','ok');
+        }
+        return;
+      }
+      openAdminModal();
+    });
+
+    $('adminCancel').addEventListener('click', closeAdminModal);
+    adminModal.addEventListener('click', (e)=>{ if(e.target===adminModal) closeAdminModal(); });
+
+    $('adminLogin').addEventListener('click', async ()=>{
+      await runBusy($('adminLogin'),'Login…', async ()=>{
+        const pass = $('adminPass').value;
+        if(pass !== ADMIN_PASSWORD){
+          alertBox('adminAlert','Password salah','err');
+          return;
+        }
+        isAdmin = true;
+        sessionStorage.setItem(ADMIN_KEY,'true');
+        closeAdminModal();
+        syncAllUI();
+        alertBox('skillsAlert','Login admin berhasil','ok');
+      });
+    });
+
+    $('mAdd').addEventListener('click', async ()=>{
+      await runBusy($('mAdd'),'Mengirim…', async ()=>{
+        const ign = $('mIgn').value.trim();
+        if(!ign){ alertBox('membersAlert','IGN wajib diisi','err'); return; }
+
+        const rec = {
+          id: 'm'+Math.random().toString(16).slice(2),
+          ign,
+          name: $('mName').value.trim(),
+          phone: $('mPhone').value.trim(),
+          timestamp: Date.now()
+        };
+
+        // optimistic UI
+        members.unshift(rec);
+        renderMembers();
+
+        try{
+          await apiCall('members_upsert', {member: rec});
+          $('mName').value=''; $('mIgn').value=''; $('mPhone').value='';
+          alertBox('membersAlert','Terkirim','ok');
+          // refresh in background (fast)
+          await liveRefreshAll();
+          renderMembers();
+        }catch(err){
+          // rollback
+          members = members.filter(x=>x.id!==rec.id);
+          renderMembers();
+          alertBox('membersAlert','Gagal kirim: '+err.message,'err');
+        }
+      });
+    });
+
+    $('mReset').addEventListener('click', ()=>{
+      $('mName').value='';
+      $('mIgn').value='';
+      $('mPhone').value='';
+    });
+
+    $('mRefresh').addEventListener('click', async ()=>{
+      await runBusy($('mRefresh'),'Refresh…', async ()=>{
+        await boot(false);
+        alertBox('membersAlert','Refreshed','info');
+      });
+    });
+
+    $('mList').addEventListener('click', async (e)=>{
+      const btn = e.target.closest('button[data-action="member-delete"]');
+      if(!btn) return;
+      if(!isAdmin){ alertBox('membersAlert','Hanya admin','err'); return; }
+
+      const id = btn.dataset.id;
+      if(!confirm('Hapus anggota ini?')) return;
+
+      await runBusy(btn,'Hapus…', async ()=>{
+        const prev = members.slice();
+        members = members.filter(x=>x.id!==id);
+        renderMembers();
+
+        try{
+          await apiCall('members_delete', {pass: ADMIN_PASSWORD, id});
+          await liveRefreshAll();
+          renderMembers();
+          alertBox('membersAlert','Dihapus','ok');
+        }catch(err){
+          members = prev;
+          renderMembers();
+          alertBox('membersAlert','Gagal hapus: '+err.message,'err');
+        }
+      });
+    });
+
+    // Quest preview
+    $('qFile').addEventListener('change', ()=>{
+      const f = $('qFile').files && $('qFile').files[0];
+      if(!f){ $('qPreview').style.display='none'; $('qPreview').src=''; return; }
+      const url = URL.createObjectURL(f);
+      $('qPreview').src = url;
+      $('qPreview').style.display='';
+    });
+
+    $('qSubmit').addEventListener('click', async ()=>{
+      await runBusy($('qSubmit'),'Upload…', async ()=>{
+        const ign = $('qIgn').value.trim();
+        if(!ign){ alertBox('questsAlert','IGN wajib diisi','err'); return; }
+        const file = $('qFile').files && $('qFile').files[0];
+        if(!file){ alertBox('questsAlert','Pilih file screenshot dulu','err'); return; }
+
+        alertBox('questsAlert','1/2 Upload ke ImgBB…','info');
+        const imgUrl = await uploadToImgBB(file);
+
+        alertBox('questsAlert','2/2 Simpan ke Spreadsheet…','info');
+        const rec = {
+          id:'q'+Math.random().toString(16).slice(2),
+          ign,
+          screenshotUrl: imgUrl,
+          timestamp: Date.now()
+        };
+
+        // optimistic
+        quests.unshift(rec);
+        renderQuests();
+
+        try{
+          await apiCall('quests_upsert', {quest: rec});
+          $('qIgn').value='';
+          $('qFile').value='';
+          $('qPreview').style.display='none';
+          $('qPreview').src='';
+          alertBox('questsAlert','Berhasil','ok');
+          await liveRefreshAll();
+          renderQuests();
+        }catch(err){
+          quests = quests.filter(x=>x.id!==rec.id);
+          renderQuests();
+          alertBox('questsAlert','Gagal simpan: '+err.message,'err');
+        }
+      });
+    });
+
+    $('qRefresh').addEventListener('click', async ()=>{
+      await runBusy($('qRefresh'),'Refresh…', async ()=>{
+        await boot(false);
+        alertBox('questsAlert','Refreshed','info');
+      });
+    });
+
+    $('qList').addEventListener('click', async (e)=>{
+      const img = e.target.closest('img[data-img]');
+      if(img){
+        const url = img.getAttribute('data-img');
+        if(url) window.open(url, '_blank', 'noopener');
+        return;
+      }
+
+      const btn = e.target.closest('button[data-action="quest-delete"]');
+      if(!btn) return;
+      if(!isAdmin){ alertBox('questsAlert','Hanya admin','err'); return; }
+
+      const id = btn.dataset.id;
+      if(!confirm('Hapus data quest ini?')) return;
+
+      await runBusy(btn,'Hapus…', async ()=>{
+        const prev = quests.slice();
+        quests = quests.filter(x=>x.id!==id);
+        renderQuests();
+
+        try{
+          await apiCall('quests_delete', {pass: ADMIN_PASSWORD, id});
+          await liveRefreshAll();
+          renderQuests();
+          alertBox('questsAlert','Dihapus','ok');
+        }catch(err){
+          quests = prev;
+          renderQuests();
+          alertBox('questsAlert','Gagal hapus: '+err.message,'err');
+        }
+      });
+    });
+
+    $('skillSearch').addEventListener('input', ()=>renderSkillRight());
+
+    $('mobileTreeSelect').addEventListener('change', ()=>{
+      selectedTree = $('mobileTreeSelect').value || '';
+      renderTreeMenu();
+      syncSkillActions();
+      renderSkillRight();
+    });
+
+    $('addSkill').addEventListener('click', ()=>openSkillModal('add'));
+    $('addTreeBtn').addEventListener('click', ()=>openTreeModal('add'));
+    $('mobileOpenTree').addEventListener('click', ()=>openTreeModal('add'));
+
+    $('editTree').addEventListener('click', ()=>{
+      const t = TREES.find(x=>x.key===selectedTree);
+      if(!t){ alertBox('skillsAlert','Tree tidak ditemukan','err'); return; }
+      openTreeModal('edit', t);
+    });
+
+    $('smCancel').addEventListener('click', closeSkillModal);
+    skillModal.addEventListener('click', (e)=>{ if(e.target===skillModal) closeSkillModal(); });
+
+    $('tmCancel').addEventListener('click', closeTreeModal);
+    treeModal.addEventListener('click', (e)=>{ if(e.target===treeModal) closeTreeModal(); });
+
+    // Skill list actions
+    $('skillList').addEventListener('click', async (e)=>{
+      const edit = e.target.closest('button[data-action="skill-edit"]');
+      const del  = e.target.closest('button[data-action="skill-delete"]');
+
+      if(edit){
+        if(!canManage()){ alertBox('skillsAlert','Hanya admin','err'); return; }
+        const id = edit.dataset.id;
+        const s = skills.find(x=>x.id===id);
+        if(!s){ alertBox('skillsAlert','Skill tidak ditemukan','err'); return; }
+        openSkillModal('edit', s);
+        return;
+      }
+
+      if(del){
+        if(!canManage()){ alertBox('skillsAlert','Hanya admin','err'); return; }
+        const id = del.dataset.id;
+        if(!confirm('Hapus skill ini?')) return;
+
+        await runBusy(del,'Hapus…', async ()=>{
+          const prev = skills.slice();
+          skills = skills.filter(x=>x.id!==id);
+          renderSkillRight();
+
+          try{
+            await apiCall('skills_delete', {pass: ADMIN_PASSWORD, id});
+            await liveRefreshAll();
+            renderSkillRight();
+            alertBox('skillsAlert','Skill dihapus','ok');
+          }catch(err){
+            skills = prev;
+            renderSkillRight();
+            alertBox('skillsAlert','Gagal hapus: '+err.message,'err');
+          }
+        });
+      }
+    });
+
+    // Save Skill
+    $('smSave').addEventListener('click', async ()=>{
+      await runBusy($('smSave'),'Simpan…', async ()=>{
+        if(!canManage()) return;
+
+        const type = $('smTree').value;
+        const kind = $('smKind').value;
+        const name = $('smName').value.trim();
+        if(!name){ alertBox('skillsAlert','Nama skill wajib diisi','err'); return; }
+
+        const level = $('smLevel').value.trim();
+        const desc  = $('smDesc').value.trim();
+
+        const weaponKeys = Array.from($('smWeapons').querySelectorAll('input[type="checkbox"]'))
+          .filter(x=>x.checked)
+          .map(x=>x.value);
+
+        const mpRaw = $('smMp').value.trim();
+        const mp = (mpRaw==='') ? '' : Number(mpRaw);
+        if(mpRaw!=='' && Number.isNaN(mp)){
+          alertBox('skillsAlert','MP harus angka','err');
+          return;
+        }
+
+        const rec = {
+          id: editingSkillId || ('s'+Math.random().toString(16).slice(2)),
+          type, kind,
+          weapons: weaponKeys,
+          name, level, mp, desc,
+          updatedAt: Date.now()
+        };
+
+        // optimistic update
+        const prev = skills.slice();
+        const idx = skills.findIndex(x=>x.id===rec.id);
+        if(idx>=0) skills[idx]=rec; else skills.unshift(rec);
+
+        selectedTree = type;
+        renderTreeMenu();
+        syncSkillActions();
+        renderSkillRight();
+
+        try{
+          await apiCall('skills_upsert', {pass: ADMIN_PASSWORD, skill: rec});
+          closeSkillModal();
+          await liveRefreshAll();
+          renderSkillRight();
+          alertBox('skillsAlert','Skill tersimpan','ok');
+        }catch(err){
+          skills = prev;
+          renderSkillRight();
+          alertBox('skillsAlert','Gagal simpan: '+err.message,'err');
+        }
+      });
+    });
+
+    // Save Tree
+    $('tmSave').addEventListener('click', async ()=>{
+      await runBusy($('tmSave'),'Simpan…', async ()=>{
+        if(!canManage()) return;
+
+        const group = normalizeGroup($('tmGroup').value);
+        const label = $('tmName').value.trim();
+        if(!label){ alertBox('treesAlert','Nama tree wajib diisi','err'); return; }
+
+        const key  = editingTreeKey || makeTreeKey(label, TREES);
+        const icon = makeTreeIcon(label);
+        const rec = {key,label,group,icon,updatedAt:Date.now()};
+
+        // optimistic
+        const prev = TREES.slice();
+        const byKey = new Map(TREES.map(t=>[t.key,t]));
+        byKey.set(key, rec);
+        TREES = Array.from(byKey.values());
+
+        try{
+          await apiCall('trees_upsert', {pass: ADMIN_PASSWORD, tree: rec});
+          selectedTree = key;
+          closeTreeModal();
+          await liveRefreshAll();
+          renderTreeMenu();
+          syncSkillActions();
+          renderSkillRight();
+          alertBox('skillsAlert','Tree tersimpan','ok');
+        }catch(err){
+          TREES = prev;
+          renderTreeMenu();
+          alertBox('treesAlert','Gagal simpan tree: '+err.message,'err');
+        }
+      });
+    });
+
+    $('tmDelete').addEventListener('click', async ()=>{
+      if(!editingTreeKey) return;
+      if(isDefaultTreeKey(editingTreeKey)){ alertBox('treesAlert','Default tree tidak boleh dihapus','err'); return; }
+      if(!confirm('Hapus tree ini?')) return;
+
+      await runBusy($('tmDelete'),'Hapus…', async ()=>{
+        const key = editingTreeKey;
+        const prevTrees = TREES.slice();
+        const prevSkills = skills.slice();
+        TREES = TREES.filter(t=>t.key!==key);
+        skills = skills.filter(s=>String(s.type)!==String(key));
+
+        try{
+          await apiCall('trees_delete', {pass: ADMIN_PASSWORD, key});
+          selectedTree = '';
+          closeTreeModal();
+          await liveRefreshAll();
+          renderTreeMenu();
+          syncSkillActions();
+          renderSkillRight();
+          alertBox('skillsAlert','Tree dihapus','ok');
+        }catch(err){
+          TREES = prevTrees;
+          skills = prevSkills;
+          renderTreeMenu();
+          renderSkillRight();
+          alertBox('treesAlert','Gagal hapus tree: '+err.message,'err');
+        }
+      });
+    });
+
+    // Info tab buttons (Neura via proxy)
+    $('infoTestBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoTestBtn'),'Test…', async ()=>{
+        const path = $('infoPath').value.trim();
+        if(!path){ alertBox('infoAlert','Isi endpoint dulu','err'); return; }
+        try{
+          const data = await neura(path);
+          $('infoRaw').textContent = JSON.stringify(data, null, 2);
+          alertBox('infoAlert','OK','ok');
+        }catch(e){
+          $('infoRaw').textContent = '';
+          alertBox('infoAlert','Gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoBannerBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoBannerBtn'),'Load…', async ()=>{
+        try{
+          const data = await neura('bannerava');
+          // show short summary
+          const summary = summarizeArray(data) || data;
+          setJson('infoBannerOut', summary);
+        }catch(e){
+          alertBox('infoAlert','Banner gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoBuffListBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoBuffListBtn'),'Load…', async ()=>{
+        try{
+          const data = await neura('buff');
+          const summary = summarizeArray(data) || data;
+          setJson('infoBuffOut', summary);
+        }catch(e){
+          alertBox('infoAlert','Buff gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoBuffSearchBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoBuffSearchBtn'),'Search…', async ()=>{
+        const q = $('infoBuffQ').value.trim();
+        if(!q){ alertBox('infoAlert','Isi kata kunci buff','err'); return; }
+        try{
+          const data = await neura('buff/idname='+encodeURIComponent(q));
+          setJson('infoBuffOut', data);
+        }catch(e){
+          alertBox('infoAlert','Search buff gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoLvBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoLvBtn'),'Cari…', async ()=>{
+        const cur = $('infoLvCur').value.trim();
+        const range = $('infoLvRange').value.trim();
+        if(!cur || !range){ alertBox('infoAlert','Isi current & range','err'); return; }
+        try{
+          const data = await neura('lv/current='+encodeURIComponent(cur)+'&range='+encodeURIComponent(range));
+          setJson('infoLvOut', data);
+        }catch(e){
+          alertBox('infoAlert','Leveling gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoAbilityListBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoAbilityListBtn'),'Load…', async ()=>{
+        try{
+          const data = await neura('ability');
+          const summary = summarizeArray(data) || data;
+          setJson('infoAbilityOut', summary);
+        }catch(e){
+          alertBox('infoAlert','Ability gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    $('infoAbilitySearchBtn').addEventListener('click', async ()=>{
+      await runBusy($('infoAbilitySearchBtn'),'Search…', async ()=>{
+        const q = $('infoAbilityQ').value.trim();
+        if(!q){ alertBox('infoAlert','Isi kata kunci ability','err'); return; }
+        try{
+          const data = await neura('ability/query='+encodeURIComponent(q));
+          setJson('infoAbilityOut', data);
+        }catch(e){
+          alertBox('infoAlert','Search ability gagal: '+e.message,'err');
+        }
+      });
+    });
+
+    // =========================
+    // Init
+    // =========================
+    renderTreeMenu();
+    syncAllUI();
+    boot(false);
+
+  })();
+  </script>
 </body>
 </html>
